@@ -44,10 +44,24 @@ namespace Malshinon.dal
             {
                 mySqlData.GetConnection();
                 var reader = cmd.ExecuteReader();
-                People person = new People();
-                person{id = reader.GetInt32("id");
-                
-            }       
+                People person = new People
+                {
+                    id = reader.GetInt32("id"),
+                    firstName = reader.GetString("first_name"),
+                    lastName = reader.GetString("last_name"),
+                    secertCODE = reader.GetString("secert_code"),
+                    type = reader.GetString("type"),
+                    numReports = reader.GetInt32("num_reports"),
+                    numMentions = reader.GetInt32("num_mentions")
+                };
+                mySqlData.CloseConnection();
+                return person;
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine($"query error: {ex.Message}");
+                return null;
+            }
         }
     }
 }
