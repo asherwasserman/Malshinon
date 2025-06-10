@@ -6,12 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Malshinon.models;
 using MySql.Data.MySqlClient;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Malshinon.dal
 {
     public class peopleDal
     {
-        public  MySQLData mySqlData = new MySQLData();
+        private MySQLData mySqlData = new MySQLData();
         public void Create(People person)
         {
             string firstName = person.firstName;
@@ -31,8 +32,22 @@ namespace Malshinon.dal
             }
             catch (MySqlException ex)
             {
-                Console.WriteLine($"Query error: {ex}");
+                Console.WriteLine($"Query error: {ex.Message}");
             }
+        }
+
+        public People GetPerson(int secertCode)
+        {
+            string query = $"SELECT * FROM people WHERE secert_code = {secertCode};";
+            MySqlCommand cmd = new MySqlCommand(query);
+            try
+            {
+                mySqlData.GetConnection();
+                var reader = cmd.ExecuteReader();
+                People person = new People();
+                person{id = reader.GetInt32("id");
+                
+            }       
         }
     }
 }
