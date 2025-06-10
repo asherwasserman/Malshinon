@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Malshinon.dal
+namespace Malshinon.models
 {
-    public class intelReport
+    public class intelReportDal
     {
+
     }
 }

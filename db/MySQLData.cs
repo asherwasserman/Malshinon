@@ -11,16 +11,15 @@ namespace Malshinon.models
     public class MySQLData
     {
         public static string connectionString = "Server=localhost;Database=malshinon;User=root;password='';Port=3306";
-        MySqlConnection conn = new MySqlConnection(connectionString);
+        public MySqlConnection conn;
 
         public Boolean TryConnection()
         {
             try
             {
-                if (conn != null)
-                {
-                    conn.Open();
-                }
+                conn = new MySqlConnection(connectionString);
+                conn.Open();
+                
                 return true;
             }
             catch (MySqlException ex)
@@ -33,10 +32,10 @@ namespace Malshinon.models
         {
             try
             {
-                if (conn != null)
-                {
-                    conn.Open();
-                }
+                conn = new MySqlConnection(connectionString);
+
+                conn.Open();
+                
             }
             catch (MySqlException ex)
             {
