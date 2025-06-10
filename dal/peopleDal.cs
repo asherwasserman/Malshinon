@@ -48,7 +48,6 @@ namespace Malshinon.models
                 mySqlData.GetConnection();
                 MySqlCommand cmd = new MySqlCommand(query, mySqlData.conn);
                 var reader = cmd.ExecuteReader();
-                reader.Read();
                 People person = new People
                 {
                     id = reader.GetInt32("id"),
