@@ -11,10 +11,10 @@ using Mysqlx.Crud;
 
 namespace Malshinon.models
 {
-    public class peopleDal
+    public class PeopleDal
     {
         private MySQLData mySqlData = new MySQLData();
-        public void Create(People person)
+        public People Create(People person)
         {
             string firstName = person.firstName;
             string lastName = person.lastName;
@@ -23,13 +23,15 @@ namespace Malshinon.models
             int numReports = person.numReports;
             int numMentions = person.numMentions;
             string query = $"INSERT INTO people(first_name, last_name, secert_code, type, num_reports, num_mentions) " +
-               $"VALUES('{firstName}', '{lastName}',  '{secertCode}', '{type}', '{numReports}', '{numMentions}');";
+               $"VALUES('{firstName}', '{lastName}',  '{secertCode}', '{type}', '{numReports}', '{numMentions}');  SELECT * FROM people WHERE people.id = LAST_INSERT_ID()";
             MySqlCommand cmd;
             try
             {   
                 mySqlData.GetConnection();
                 cmd = new MySqlCommand(query, mySqlData.conn);
-                cmd.ExecuteNonQuery();               
+                var reader = cmd.ExecuteReader();
+                person = CreateFromReader(reader);
+                return person;
             }
             catch (MySqlException ex)
             {
@@ -39,6 +41,7 @@ namespace Malshinon.models
             {
                 mySqlData.CloseConnection();
             }
+            return null;
         }
 
         private People GetPerson(string query)
@@ -48,16 +51,7 @@ namespace Malshinon.models
                 mySqlData.GetConnection();
                 MySqlCommand cmd = new MySqlCommand(query, mySqlData.conn);
                 var reader = cmd.ExecuteReader();
-                People person = new People
-                {
-                    id = reader.GetInt32("id"),
-                    firstName = reader.GetString("first_name"),
-                    lastName = reader.GetString("last_name"),
-                    secertCODE = reader.GetString("secert_code"),
-                    type = reader.GetString("type"),
-                    numReports = reader.GetInt32("num_reports"),
-                    numMentions = reader.GetInt32("num_mentions")
-                };
+                People person = CreateFromReader(reader);
                 return person;
             }
             catch (MySqlException ex)
@@ -106,10 +100,28 @@ namespace Malshinon.models
             return person;
         }
 
-        public void UpdateReportById(int id, int num)
+        public void UpdateReportById(People person , int num)
         {
-            string query = $"UPDATE people SET people.num_reports = '{num}' WHERE people.id = '{id}'";
+            string query = $"UPDATE people SET people.num_reports = '{num}'" +
+                $", people.num_mentioms = '{person.numMentions}'" +
+                $",people.type = '{person.type} WHERE people.id = '{person.id}'";
             update(query);
+        }
+
+        public static People CreateFromReader (MySqlDataReader reader)
+        {
+            reader.Read();
+            People person = new People
+            {
+                id = reader.GetInt32("id"),
+                firstName = reader.GetString("first_name"),
+                lastName = reader.GetString("last_name"),
+                secertCODE = reader.GetString("secert_code"),
+                type = reader.GetString("type"),
+                numReports = reader.GetInt32("num_reports"),
+                numMentions = reader.GetInt32("num_mentions")
+            };
+            return person;
         }
 
     }

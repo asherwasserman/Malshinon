@@ -10,16 +10,20 @@ namespace Malshinon
             //{
             //    firstName = "hVH",
             //    lastName = "jzbi",
-            //    secertCODE = "bzjhxv",
+            //    secertCODE = "bnjnk",
             //    type = "both",
             //    numReports = 5,
             //    numMentions = 6
             //};
-            peopleDal people = new peopleDal();
-            //people.Create(person);
-            People person = new People();
-            people.UpdateReportById(2, 2);
-            Console.WriteLine(person.type);
+            PeopleDal people = new PeopleDal();
+            People newPerson = new People();
+            //newPerson =  people.Create(person);
+            //Console.WriteLine(newPerson.id);
+
+            //people.UpdateReportById(2, 2);
+            //Console.WriteLine(person.type);
+            newPerson = people.GetPeopleById(5);
+            Console.WriteLine(newPerson.firstName);
         }
     }
 }
