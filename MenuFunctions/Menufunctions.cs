@@ -12,6 +12,29 @@ namespace Malshinon.Models
     {
         private static PeopleControler pc = new PeopleControler();
         private static IntelReportsControler Irc = new IntelReportsControler();
+
+        public static void showMenu()
+        {
+            Boolean run = true;
+            while (run)
+            {
+                Console.WriteLine(
+                    "Welcome to the Intelligence Reporting System!" +
+                    " \nPlease select one of the following options: " +
+                    "\n \n1.Report important information" +
+                    " \n2.Logout");
+                string choice = Console.ReadLine()!;
+                switch (choice)
+                {
+                    case "1":
+                        AddingIntelReportBySecertCode();
+                        break;
+                    case "2":
+                        run = false;
+                        break;
+                }
+            }
+        }
         public static void AddingIntelReportBySecertCode()
         {
             string secertCode = logIn();

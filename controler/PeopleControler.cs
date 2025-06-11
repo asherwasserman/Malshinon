@@ -44,11 +44,13 @@ namespace Malshinon.controler
             {
                 person.type = "both";
             }
+            peopledal.UpdateReportById(person);
         }
 
         public void UpdateNumReport(People person)
         {
-            person.numReports++;   
+            person.numReports++;
+            peopledal.UpdateReportById(person);
         }
 
         public People CreateTarget(string SecertCode)
@@ -79,11 +81,13 @@ namespace Malshinon.controler
             {
                 person.type = "both";
             }
+            peopledal.UpdateReportById(person);
         }
 
         public void UpdateNumtarget(People person)
         {
             person.numMentions++;
+            peopledal.UpdateReportById(person);
         }
 
         public People GetPeople(string secertCode)

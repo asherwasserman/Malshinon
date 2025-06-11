@@ -112,11 +112,11 @@ namespace Malshinon.models
             return person;
         }
 
-        public void UpdateReportById(People person , int num)
+        public void UpdateReportById(People person )
         {
-            string query = $"UPDATE people SET people.num_reports = '{num}'" +
-                $", people.num_mentioms = '{person.numMentions}'" +
-                $",people.type = '{person.type} WHERE people.id = '{person.id}'";
+            string query = $"UPDATE people SET people.num_reports = '{person.numReports}'" +
+                $", people.num_mentions = '{person.numMentions}'" +
+                $",people.type = '{person.type}' WHERE people.id = '{person.id}'";
             update(query);
         }
 
