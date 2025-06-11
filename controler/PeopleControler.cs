@@ -1,4 +1,5 @@
 ﻿using Malshinon.models;
+using Org.BouncyCastle.Asn1.X509.SigI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,15 @@ namespace Malshinon.controler
 
         public void UpdateType(People person)
         {
-            if (person.type = "target" )
+            if (person.type == "target")
+            {
+                person.type = "both";
+            }
+        }
+
+        public void UpdateNumReport(People person)
+        {
+            person.numReports++;   
         }
     }
 }
