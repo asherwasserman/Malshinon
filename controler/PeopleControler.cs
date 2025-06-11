@@ -26,6 +26,7 @@ namespace Malshinon.controler
 
             People person = new People()
             {
+                secertCODE = secertCode,
                 firstName = FirstName,
                 lastName = LastName,
                 type = "reporter",
@@ -37,17 +38,63 @@ namespace Malshinon.controler
             return newInsertPeople;
         }
 
-        public void UpdateType(People person)
+        public void UpdateTypeReporter(People person)
         {
             if (person.type == "target")
             {
                 person.type = "both";
             }
+            peopledal.UpdateReportById(person);
         }
 
         public void UpdateNumReport(People person)
         {
-            person.numReports++;   
+            person.numReports++;
+            peopledal.UpdateReportById(person);
+        }
+
+        public People CreateTarget(string SecertCode)
+        {           
+            Console.WriteLine("please enter the targets first name: ");
+            string FirstName = Console.ReadLine()!;
+
+            Console.WriteLine("please enter the targets last name: ");
+            string LastName = Console.ReadLine()!;
+
+            People person = new People()
+            {
+                secertCODE = SecertCode,
+                firstName = FirstName,
+                lastName = LastName,
+                type = "target",
+                numMentions = 1
+            };
+            People newInsertPeople = new People();
+            newInsertPeople = peopledal.Create(person);
+
+            return newInsertPeople;
+        }
+
+        public void UpdateTypetarget(People person)
+        {
+            if (person.type == "reporter" || person.type == "potential agent" )
+            {
+                person.type = "both";
+            }
+            peopledal.UpdateReportById(person);
+        }
+
+        public void UpdateNumtarget(People person)
+        {
+            person.numMentions++;
+            peopledal.UpdateReportById(person);
+        }
+
+        public People GetPeople(string secertCode)
+        {
+            People person = new People();
+            person = peopledal.GetPeopleBySecertCode(secertCode);
+            return person;            
         }
     }
 }

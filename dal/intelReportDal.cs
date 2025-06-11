@@ -21,9 +21,9 @@ namespace Malshinon.models
                 string intelText = intelReport.intelText;
                 DateTime timeStemp = intelReport.timeStemp;
                 string query = $"INSERT INTO intel_reports ( report_id, target_id, intel_text, time_stemp)" +
-                    $" VALUES ('{reportId}','{targetId}','{intelText}','{timeStemp}')";
+                    $" VALUES ('{reportId}','{targetId}','{intelText}','{timeStemp}');";
                 mySQL.GetConnection();
-                MySqlCommand cmd = new MySqlCommand(query);
+                MySqlCommand cmd = new MySqlCommand(query, mySQL.conn);
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException ex)

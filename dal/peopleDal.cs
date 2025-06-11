@@ -23,15 +23,21 @@ namespace Malshinon.models
             int numReports = person.numReports;
             int numMentions = person.numMentions;
             string query = $"INSERT INTO people(first_name, last_name, secert_code, type, num_reports, num_mentions) " +
-               $"VALUES('{firstName}', '{lastName}',  '{secertCode}', '{type}', '{numReports}', '{numMentions}');  SELECT * FROM people WHERE people.id = LAST_INSERT_ID()";
+               $"VALUES('{firstName}', '{lastName}',  '{secertCode}', '{type}', '{numReports}', '{numMentions}');" +
+               $"  SELECT * FROM people WHERE people.id = LAST_INSERT_ID()";
             MySqlCommand cmd;
             try
             {   
                 mySqlData.GetConnection();
                 cmd = new MySqlCommand(query, mySqlData.conn);
                 var reader = cmd.ExecuteReader();
-                person = CreateFromReader(reader);
-                return person;
+                while (reader.Read())
+                {
+                    person = CreateFromReader(reader);
+                    Console.WriteLine(person.id);
+                    return person;
+                }
+                
             }
             catch (MySqlException ex)
             {
@@ -51,11 +57,17 @@ namespace Malshinon.models
                 mySqlData.GetConnection();
                 MySqlCommand cmd = new MySqlCommand(query, mySqlData.conn);
                 var reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    
                 People person = CreateFromReader(reader);
                 return person;
+                }
+                return null;
             }
             catch (MySqlException ex)
             {
+                Console.WriteLine(ex);
                 Console.WriteLine($"query error: {ex.Message}");
                 return null;
             }
@@ -100,17 +112,17 @@ namespace Malshinon.models
             return person;
         }
 
-        public void UpdateReportById(People person , int num)
+        public void UpdateReportById(People person )
         {
-            string query = $"UPDATE people SET people.num_reports = '{num}'" +
-                $", people.num_mentioms = '{person.numMentions}'" +
-                $",people.type = '{person.type} WHERE people.id = '{person.id}'";
+            string query = $"UPDATE people SET people.num_reports = '{person.numReports}'" +
+                $", people.num_mentions = '{person.numMentions}'" +
+                $",people.type = '{person.type}' WHERE people.id = '{person.id}'";
             update(query);
         }
 
         public static People CreateFromReader (MySqlDataReader reader)
         {
-            reader.Read();
+            //reader.Read();
             People person = new People
             {
                 id = reader.GetInt32("id"),
@@ -121,6 +133,7 @@ namespace Malshinon.models
                 numReports = reader.GetInt32("num_reports"),
                 numMentions = reader.GetInt32("num_mentions")
             };
+
             return person;
         }
 
